@@ -1,0 +1,94 @@
+## =============================================
+##  .gitignore — .NET / C# API Gateway
+## =============================================
+
+# -----------------------------------------------
+# Build output
+# -----------------------------------------------
+[Bb]in/
+[Oo]bj/
+out/
+publish/
+
+# -----------------------------------------------
+# Visual Studio files
+# -----------------------------------------------
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.aps
+*.ncb
+*.opendb
+*.opensdf
+*.sdf
+*.cachefile
+*.VC.db
+*.VC.opendb
+.vscode/
+
+# -----------------------------------------------
+# NuGet
+# -----------------------------------------------
+*.nupkg
+*.snupkg
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+*.nuget.props
+*.nuget.targets
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# -----------------------------------------------
+# .NET Core / SDK
+# -----------------------------------------------
+*.dll
+*.pdb
+*.exe
+*.cache
+*.log
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
+
+# -----------------------------------------------
+# Publish profiles & secrets
+# -----------------------------------------------
+**/Properties/PublishProfiles/
+appsettings.Development.json
+appsettings.Local.json
+secrets.json
+.env
+.env.*
+
+# -----------------------------------------------
+# Test results
+# -----------------------------------------------
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+TestResult.xml
+coverage*/
+*.trx
+
+# -----------------------------------------------
+# Rider / JetBrains
+# -----------------------------------------------
+.idea/
+*.sln.iml
+
+# -----------------------------------------------
+# Docker
+# -----------------------------------------------
+.dockerignore
+docker-compose.override.yml
+
+# -----------------------------------------------
+# Misc
+# -----------------------------------------------
+*.bak
+*.orig
+*.swp
+*~

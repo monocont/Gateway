@@ -10,9 +10,9 @@ using Ocelot.Middleware;
 var builder = WebApplication.CreateBuilder(args);
 
 // ──────────────────────────────────────────────────────────────────────
-// Puerto explícito: http://localhost:4444
+// Puerto explícito: http://localhost:5050
 // ──────────────────────────────────────────────────────────────────────
-builder.WebHost.UseUrls("http://localhost:4444");
+builder.WebHost.UseUrls("http://localhost:5050");
 
 // ──────────────────────────────────────────────────────────────────────
 // Archivos de configuración

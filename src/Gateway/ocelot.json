@@ -1,41 +1,118 @@
 {
     "Routes": [
         {
-            "UpstreamPathTemplate": "/usuario_service/{everything}",
-            "UpstreamHttpMethod": [
-                "GET",
-                "POST",
-                "PUT",
-                "DELETE"
-            ],
-            "DownstreamPathTemplate": "/api/Usuarios/{everything}",
-            "DownstreamScheme": "https",
+            "UpstreamPathTemplate": "/seguridad_service/{everything}",
+            "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH" ],
+            "DownstreamPathTemplate": "/api/v1/{everything}",
+            "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
                 {
                     "Host": "localhost",
-                    "Port": 5552
+                    "Port": 5000
                 }
             ],
-            "RouteIsCaseSensitive": false,
-            "AuthenticationOptions": {
-                "AuthenticationProviderKey": "Bearer",
-                "AllowedScopes": []
-            }
+            "RouteIsCaseSensitive": false
         },
         {
-            "UpstreamPathTemplate": "/api/auth/{everything}",
-            "UpstreamHttpMethod": [
-                "GET",
-                "POST",
-                "PUT",
-                "DELETE"
-            ],
-            "DownstreamPathTemplate": "/api/auth/{everything}",
-            "DownstreamScheme": "https",
+            "UpstreamPathTemplate": "/seguridad_service",
+            "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH" ],
+            "DownstreamPathTemplate": "/api/v1",
+            "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
                 {
                     "Host": "localhost",
-                    "Port": 5550
+                    "Port": 5000
+                }
+            ],
+            "RouteIsCaseSensitive": false
+        },
+        {
+            "UpstreamPathTemplate": "/empresa_service/{everything}",
+            "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH" ],
+            "DownstreamPathTemplate": "/api/v1/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5001
+                }
+            ],
+            "RouteIsCaseSensitive": false
+        },
+        {
+            "UpstreamPathTemplate": "/empresa_service",
+            "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH" ],
+            "DownstreamPathTemplate": "/api/v1",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5001
+                }
+            ],
+            "RouteIsCaseSensitive": false
+        },
+        {
+            "UpstreamPathTemplate": "/catalogos_service/{everything}",
+            "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH" ],
+            "DownstreamPathTemplate": "/api/v1/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5002
+                }
+            ],
+            "RouteIsCaseSensitive": false
+        },
+        {
+            "UpstreamPathTemplate": "/catalogos_service",
+            "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH" ],
+            "DownstreamPathTemplate": "/api/v1",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5002
+                }
+            ],
+            "RouteIsCaseSensitive": false
+        },
+        {
+            "UpstreamPathTemplate": "/operaciones_service/{everything}",
+            "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH" ],
+            "DownstreamPathTemplate": "/api/v1/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5003
+                }
+            ],
+            "RouteIsCaseSensitive": false
+        },
+        {
+            "UpstreamPathTemplate": "/operaciones_service",
+            "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH" ],
+            "DownstreamPathTemplate": "/api/v1",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5003
+                }
+            ],
+            "RouteIsCaseSensitive": false
+        },
+        {
+            "UpstreamPathTemplate": "/.well-known/{everything}",
+            "UpstreamHttpMethod": [ "GET", "OPTIONS" ],
+            "DownstreamPathTemplate": "/.well-known/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5000
                 }
             ],
             "RouteIsCaseSensitive": false

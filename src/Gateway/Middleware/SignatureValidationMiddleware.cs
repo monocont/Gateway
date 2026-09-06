@@ -32,6 +32,13 @@ public class SignatureValidationMiddleware
 
     public async Task InvokeAsync(HttpContext context)
     {
+        // Eximir preflights CORS OPTIONS
+        if (HttpMethods.IsOptions(context.Request.Method))
+        {
+            await _next(context);
+            return;
+        }
+
         var path = context.Request.Path.Value ?? string.Empty;
 
         // Verificar si la ruta está exenta de validación

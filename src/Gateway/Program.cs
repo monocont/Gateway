@@ -14,6 +14,12 @@ var builder = WebApplication.CreateBuilder(args);
 // ──────────────────────────────────────────────────────────────────────
 builder.WebHost.UseUrls("http://localhost:5050");
 
+// Límite de carga para archivos (SIRE compras/ventas hasta 50MB)
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.Limits.MaxRequestBodySize = 52428800; // 50 MB
+});
+
 // ──────────────────────────────────────────────────────────────────────
 // Archivos de configuración
 // ──────────────────────────────────────────────────────────────────────
@@ -28,13 +34,25 @@ builder.Configuration
 builder.Services.Configure<GatewaySettings>(
     builder.Configuration.GetSection(GatewaySettings.SectionName));
 
+// Configuración de CORS para el Frontend de Angular (http://localhost:4200)
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularApp", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200", "https://localhost:4200")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
+
 // Servicio de validación de firma (singleton: sin estado mutable)
 builder.Services.AddSingleton<ISignatureValidationService, SignatureValidationService>();
 
 // ── Autenticación JWT Bearer (RS256 via JWKS) ────────────────────────
-var jwtIssuer   = builder.Configuration["JwtSettings:Issuer"]   ?? string.Empty;
-var jwtAudience = builder.Configuration["JwtSettings:Audience"] ?? string.Empty;
-var jwksUri     = builder.Configuration["JwtSettings:JwksUri"]  ?? string.Empty;
+var jwtIssuer   = builder.Configuration["JwtSettings:Issuer"]   ?? "Service.Seguridad";
+var jwtAudience = builder.Configuration["JwtSettings:Audience"] ?? "Monocont";
+var jwksUri     = builder.Configuration["JwtSettings:JwksUri"]  ?? "http://localhost:5000/.well-known/jwks";
 
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -52,12 +70,11 @@ builder.Services
             ValidAudience            = jwtAudience,
             ClockSkew                = TimeSpan.Zero,
 
-            // RS256: obtiene la clave pública desde el endpoint JWKS del AutenticacionService
+            // RS256: obtiene la clave pública desde el endpoint JWKS de Service.Seguridad
             IssuerSigningKeyResolver = (token, securityToken, kid, parameters) =>
             {
                 try
                 {
-                    // Aceptar certificados auto-firmados en desarrollo
                     var handler = new HttpClientHandler
                     {
                         ServerCertificateCustomValidationCallback =
@@ -92,17 +109,20 @@ builder.Services.AddHealthChecks();
 // ──────────────────────────────────────────────────────────────────────
 var app = builder.Build();
 
-// Health check (sin autenticación)
+// 1. CORS debe ser lo primero para responder a preflights OPTIONS de Angular
+app.UseCors("AllowAngularApp");
+
+// 2. Health check (sin autenticación)
 app.MapHealthChecks("/health");
 
-// Autenticación y autorización deben ir ANTES del middleware de firma y Ocelot
+// 3. Autenticación y autorización
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Middleware de firma HMAC-SHA256 (validación adicional de origen)
+// 4. Middleware de firma HMAC-SHA256 (para clientes B2B/externos; excluye SPA)
 app.UseMiddleware<SignatureValidationMiddleware>();
 
-// Ocelot gestiona el enrutamiento hacia los microservicios downstream
+// 5. Ocelot gestiona el enrutamiento hacia los microservicios downstream
 await app.UseOcelot();
 
 app.Run();
